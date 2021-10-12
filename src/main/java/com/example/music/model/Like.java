@@ -1,8 +1,11 @@
 package com.example.music.model;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "like")
@@ -19,4 +22,11 @@ public class Like {
     @Column(name = "song_id")
     private Long songId;
 
+    @Column(name = "create", updatable = false)
+    @CreationTimestamp
+    private Date createDate;
+
+    @Column(name = "updated")
+    @UpdateTimestamp
+    private Date updateDate;
 }

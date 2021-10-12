@@ -1,8 +1,11 @@
 package com.example.music.model;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "users")
@@ -40,5 +43,22 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "id_role")
     private Role roles;
+
+    @Column(name = "is_singger")
+    private Integer isSinger;
+
+    @Column(name = "is_active")
+    private Integer isActive;
+
+    @Column(name = "create", updatable = false)
+    @CreationTimestamp
+    private Date createDate;
+
+    @Column(name = "updated")
+    @UpdateTimestamp
+    private Date updateDate;
+
+    @Transient
+    private Long roleId;
 
 }

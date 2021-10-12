@@ -1,7 +1,7 @@
 package com.example.music.controller;
 
 
-
+import com.example.music.dto.response.UserDataDto;
 import com.example.music.model.User;
 import com.example.music.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,5 +22,10 @@ public class UserRestController {
     @PostMapping("/create")
     public ResponseEntity createUser(@RequestBody User user){
         return new ResponseEntity(userService.saveOrUpdate(user), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/find-by-username")
+    public ResponseEntity findByUserName(@RequestBody UserDataDto user){
+        return new ResponseEntity(userService.findByUserName(user.getUserName()), HttpStatus.CREATED);
     }
 }

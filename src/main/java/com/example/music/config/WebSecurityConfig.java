@@ -45,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests().antMatchers("/admin/**", "/**/viewer/**").authenticated() // các request bắt đầu bằng admin, user thì phải xác thực
+                .authorizeRequests().antMatchers("**/admin/**", "/**/viewer/**", "**/singer/**").authenticated() // các request bắt đầu bằng admin, user thì phải xác thực
                 .anyRequest().permitAll() // Tất cả các request đều được truy cập
                 .and()
                 .formLogin() // Cho phép người dùng xác thực bằng form login

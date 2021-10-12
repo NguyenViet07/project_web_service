@@ -2,6 +2,7 @@ package com.example.music.model;
 
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -27,12 +28,22 @@ public class Song {
     @Column(name = "views")
     private Long views;
 
+    @Column(name = "style")
+    private Long style;
+
+    @Column(name = "type")
+    private Long type;
+
     @Column(name = "description")
     private String description;
 
-    @Column(name = "create_date", updatable = false)
+    @Column(name = "create", updatable = false)
     @CreationTimestamp
     private Date createDate;
+
+    @Column(name = "updated")
+    @UpdateTimestamp
+    private Date updateDate;
 
     @Column(name = "user_id")
     private Long userId;

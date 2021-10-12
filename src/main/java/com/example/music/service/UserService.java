@@ -1,7 +1,9 @@
 package com.example.music.service;
 
+import com.example.music.model.Role;
 import com.example.music.model.User;
 import com.example.music.model.UserPrinciple;
+import com.example.music.repositories.RoleRepository;
 import com.example.music.repositories.UserRepository;
 import com.example.music.response.ResponseCode;
 import com.example.music.response.ResponseResult;
@@ -14,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.beans.Transient;
 import java.util.Collection;
 
 @Service
@@ -22,6 +25,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -46,13 +52,20 @@ public class UserService implements UserDetailsService {
         return new UserPrinciple(user.getUserId(), user.getUsername(), user.getPassword(), (Collection<? extends GrantedAuthority>) user.getRoles());
     }
 
+    @Transient
     public ResponseResult saveOrUpdate(User user) {
-        if (user == null || user.getUsername() == null || user.getPassword() == null) {
+        if (user == null || user.getUsername() == null || user.getPassword() == null || user.getRoleId() == null) {
             return new ResponseResult(ResponseCode.ERR_INPUT);
         }
+        Role role = roleRepository.findAllById(user.getRoleId());
+        user.setRoles(role);
         String passDecode = passwordEncoder.encode(user.getPassword());
         user.setPassword(passDecode);
         userRepository.save(user);
         return ResponseResult.success(null);
+    }
+
+    public ResponseResult findByUserName(String userName) {
+        return ResponseResult.success(userRepository.findByUsername(userName));
     }
 }
