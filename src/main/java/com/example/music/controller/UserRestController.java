@@ -1,6 +1,7 @@
 package com.example.music.controller;
 
 
+import com.example.music.dto.request.UserRequest;
 import com.example.music.dto.response.UserDataDto;
 import com.example.music.model.User;
 import com.example.music.service.UserService;
@@ -28,4 +29,9 @@ public class UserRestController {
 //    public ResponseEntity findByUserName(@RequestBody UserDataDto user){
 //        return new ResponseEntity(userService.findByUserName(user.getUserName()), HttpStatus.CREATED);
 //    }
+
+    @PostMapping("/admin/get-list-user")
+    public ResponseEntity findByUserName(@RequestBody UserRequest user) {
+        return new ResponseEntity(userService.getListUser(user), HttpStatus.CREATED);
+    }
 }

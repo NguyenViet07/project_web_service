@@ -1,5 +1,6 @@
 package com.example.music.service;
 
+import com.example.music.dto.request.UserRequest;
 import com.example.music.model.Role;
 import com.example.music.model.User;
 import com.example.music.model.UserPrinciple;
@@ -9,6 +10,7 @@ import com.example.music.response.ResponseCode;
 import com.example.music.response.ResponseResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -66,11 +68,25 @@ public class UserService implements UserDetailsService {
                 User userOld = userRepository.findByUsername(user.getUsername());
                 if (userOld != null) return new ResponseResult(ResponseCode.ERROR_USER_EXIST);
             }
+            if (user.getRoleId() == 3) {
+                user.setIsSinger(0);
+                user.setIsSinger(1);
+            } else if (user.getRoleId() == 2){
+                user.setIsSinger(1);
+                user.setIsActive(0);
+                if (user.getCompany() == null || user.getAddress() == null || user.getIdentityCard() == null) {
+                    return new ResponseResult(ResponseCode.ERR_INPUT);
+                }
+            } else if (user.getRoleId() == 1) {
+                user.setIsSinger(1);
+                user.setIsActive(1);
+            } else return new ResponseResult(ResponseCode.ERROR);
+
             Role role = roleRepository.findAllById(user.getRoleId());
             user.setRoles(role);
             String passDecode = passwordEncoder.encode(user.getPassword());
             user.setPassword(passDecode);
-            System.out.println("ussssssss: " + user);
+
             userRepository.save(user);
             return ResponseResult.success(null);
         } catch (Exception ex) {
@@ -83,5 +99,11 @@ public class UserService implements UserDetailsService {
 
     public ResponseResult findByUserName(String userName) {
         return ResponseResult.success(userRepository.findByUsername(userName));
+    }
+
+    public ResponseResult getListUser(UserRequest user) {
+        PageRequest page = PageRequest.of(user.getPage() - 1, user.getSize());
+
+        return ResponseResult.success(userRepository.getListUser(user.getUsername(), page));
     }
 }
