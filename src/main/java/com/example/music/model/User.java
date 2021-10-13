@@ -50,7 +50,7 @@ public class User {
     @Column(name = "is_active")
     private Integer isActive;
 
-    @Column(name = "create", updatable = false)
+    @Column(name = "created", updatable = false)
     @CreationTimestamp
     private Date createDate;
 

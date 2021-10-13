@@ -12,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 
 @RestController
-@RequestMapping(path = "/api/v1/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
 
     @Autowired
@@ -25,8 +27,8 @@ public class AuthController {
         return ResponseEntity.ok(authService.login(input));
     }
 
-//    @GetMapping("/logout")
-//    public ResponseEntity logout(HttpServletRequest request) {
-//        return ResponseEntity.ok(authService.logout(request));
-//    }
+    @GetMapping("/logout")
+    public ResponseEntity logout(HttpServletRequest request) {
+        return ResponseEntity.ok(authService.logout(request));
+    }
 }

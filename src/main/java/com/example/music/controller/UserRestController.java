@@ -24,8 +24,8 @@ public class UserRestController {
         return new ResponseEntity(userService.saveOrUpdate(user), HttpStatus.CREATED);
     }
 
-    @PostMapping("/find-by-username")
-    public ResponseEntity findByUserName(@RequestBody UserDataDto user){
-        return new ResponseEntity(userService.findByUserName(user.getUserName()), HttpStatus.CREATED);
-    }
+//    @PostMapping("/find-by-username")
+//    public ResponseEntity findByUserName(@RequestBody UserDataDto user){
+//        return new ResponseEntity(userService.findByUserName(user.getUserName()), HttpStatus.CREATED);
+//    }
 }

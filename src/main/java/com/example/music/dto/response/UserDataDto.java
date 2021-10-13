@@ -1,5 +1,6 @@
 package com.example.music.dto.response;
 
+import com.example.music.dto.UserInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,9 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDataDto {
-    private Long userId;
-    private String userName;
-    private String fullName;
-    private String tokenId;
 
+    private UserInfo userInfo;
+    private String roleName;
+    private String token;
 }

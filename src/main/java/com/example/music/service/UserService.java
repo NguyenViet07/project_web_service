@@ -10,6 +10,7 @@ import com.example.music.response.ResponseResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,7 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.beans.Transient;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -49,20 +52,33 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
-        return new UserPrinciple(user.getUserId(), user.getUsername(), user.getPassword(), (Collection<? extends GrantedAuthority>) user.getRoles());
+
+        return new UserPrinciple(user.getUserId(), user.getUsername(), user.getPassword(), Arrays.asList(new SimpleGrantedAuthority(user.getRoles().getName())));
     }
 
     @Transient
     public ResponseResult saveOrUpdate(User user) {
-        if (user == null || user.getUsername() == null || user.getPassword() == null || user.getRoleId() == null) {
-            return new ResponseResult(ResponseCode.ERR_INPUT);
+        try {
+            if (user == null || user.getUsername() == null || user.getPassword() == null || user.getRoleId() == null) {
+                return new ResponseResult(ResponseCode.ERR_INPUT);
+            }
+            if (user.getUsername() != null) {
+                User userOld = userRepository.findByUsername(user.getUsername());
+                if (userOld != null) return new ResponseResult(ResponseCode.ERROR_USER_EXIST);
+            }
+            Role role = roleRepository.findAllById(user.getRoleId());
+            user.setRoles(role);
+            String passDecode = passwordEncoder.encode(user.getPassword());
+            user.setPassword(passDecode);
+            System.out.println("ussssssss: " + user);
+            userRepository.save(user);
+            return ResponseResult.success(null);
+        } catch (Exception ex) {
+            ResponseCode responseCode = ResponseCode.ERROR;
+            responseCode.setMessage(ex.getMessage());
+            return new ResponseResult(responseCode);
         }
-        Role role = roleRepository.findAllById(user.getRoleId());
-        user.setRoles(role);
-        String passDecode = passwordEncoder.encode(user.getPassword());
-        user.setPassword(passDecode);
-        userRepository.save(user);
-        return ResponseResult.success(null);
+
     }
 
     public ResponseResult findByUserName(String userName) {
