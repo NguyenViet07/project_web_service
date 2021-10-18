@@ -20,13 +20,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
             " WHERE username = :userName ", nativeQuery = true)
     IUserDTO findUserDTOByUserName(@Param("userName")String userName);
 
-    @Query(value = " SELECT u.username, u.name, r.name as roleName " +
+    @Query(value = " SELECT u.address, u.company, u.identity_card as identityCard, u.username, u.name, u.is_singger, u.is_active, u.created, u.updated, r.name as roleName " +
             " FROM users u INNER JOIN role r ON u.id_role = r.id " +
-            " WHERE username = :userName ",
-            countQuery = " SELECT u.username, u.name, r.name as roleName " +
+            " WHERE (:userName is null or u.username like %:userName%) " +
+            " AND r.id =:roleId ",
+            countQuery = " SELECT u.address, u.company, u.identity_card as identityCard, u.username, u.name, u.is_singger, u.is_active, u.created, u.updated , r.name as roleName " +
                     " FROM users u INNER JOIN role r ON u.id_role = r.id " +
-                    " WHERE username = :userName ", nativeQuery = true)
-    Page<User> getListUser(@Param("userName")String userName, Pageable page);
+                    " WHERE (:userName is null or u.username like %:userName%) " +
+                    " r.id =:roleId ", nativeQuery = true)
+    Page<IUserDTO> getListUser(@Param("userName")String userName, @Param("roleId")Long roleId, Pageable page);
 
     User findAllByUserId(Long userId);
 

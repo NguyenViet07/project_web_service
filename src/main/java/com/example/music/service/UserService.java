@@ -104,6 +104,7 @@ public class UserService implements UserDetailsService {
     public ResponseResult getListUser(UserRequest user) {
         PageRequest page = PageRequest.of(user.getPage() - 1, user.getSize());
 
-        return ResponseResult.success(userRepository.getListUser(user.getUsername(), page));
+
+        return ResponseResult.success(userRepository.getListUser(user.getUsername(), 1l, page));
     }
 }

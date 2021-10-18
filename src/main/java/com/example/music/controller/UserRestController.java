@@ -31,7 +31,7 @@ public class UserRestController {
 //    }
 
     @PostMapping("/admin/get-list-user")
-    public ResponseEntity findByUserName(@RequestBody UserRequest user) {
+    public ResponseEntity findAllUser(@RequestBody UserRequest user) {
         return new ResponseEntity(userService.getListUser(user), HttpStatus.CREATED);
     }
 }
