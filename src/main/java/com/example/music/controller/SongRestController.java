@@ -10,10 +10,9 @@ import com.example.music.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/v1/song")
@@ -22,8 +21,8 @@ public class SongRestController {
     @Autowired
     private SongService songService;
 
-    @PostMapping("singer/create")
-    public ResponseEntity createUser(@RequestBody SongRequest songRequest){
+    @RequestMapping(path = "singer/create", method = RequestMethod.POST, consumes = {"multipart/form-data"})
+    public ResponseEntity createUser(@ModelAttribute SongRequest songRequest, HttpServletRequest request){
         return new ResponseEntity(songService.saveOrUpdate(songRequest), HttpStatus.CREATED);
     }
 

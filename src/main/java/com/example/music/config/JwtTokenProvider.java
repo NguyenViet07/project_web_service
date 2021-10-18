@@ -1,8 +1,12 @@
 package com.example.music.config;
 
+import com.example.music.model.User;
 import com.example.music.model.UserPrinciple;
+import com.example.music.repositories.UserRepository;
+import com.example.music.service.UserService;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -10,6 +14,9 @@ import java.util.Date;
 @Component
 @Slf4j
 public class JwtTokenProvider {
+
+    @Autowired
+    private UserRepository userRepository;
     // Đoạn JWT_SECRET này là bí mật, chỉ có phía server biết
     private final String JWT_SECRET = "music";
 
@@ -30,13 +37,17 @@ public class JwtTokenProvider {
     }
 
     // Lấy thông tin user từ jwt
-    public Long getUserIdFromJWT(String token) {
+    public User getUserIdFromJWT(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(JWT_SECRET)
                 .parseClaimsJws(token)
                 .getBody();
 
-        return Long.parseLong(claims.getSubject());
+        Long idUser = Long.parseLong(claims.getSubject());
+
+        User user = userRepository.findAllByUserId(idUser);
+
+        return user;
     }
 
     public boolean validateToken(String authToken) {
