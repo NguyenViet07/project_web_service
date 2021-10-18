@@ -1,6 +1,7 @@
 package com.example.music.service;
 
 import com.example.music.dto.request.SongRequest;
+import com.example.music.model.Song;
 import com.example.music.repositories.SongRepository;
 import com.example.music.response.ResponseCode;
 import com.example.music.response.ResponseResult;
@@ -19,11 +20,14 @@ public class SongService {
 
 
     @Transient
-    public ResponseResult saveOrUpdate(SongRequest songRequest) {
+    public ResponseResult saveOrUpdate(SongRequest songRequest, String token) {
         try {
             // lưu data bài hát
 
             // lưu thông tin bài hát
+            Song song = songRequest.getSong();
+//            song.setUserId();
+
             songRepository.save(songRequest.getSong());
             return ResponseResult.success(null);
         } catch (Exception ex) {

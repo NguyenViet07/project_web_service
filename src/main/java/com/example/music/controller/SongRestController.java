@@ -2,6 +2,7 @@ package com.example.music.controller;
 
 
 
+import com.example.music.config.JwtAuthenticationFilter;
 import com.example.music.dto.request.SongRequest;
 import com.example.music.model.Song;
 import com.example.music.model.User;
@@ -21,9 +22,15 @@ public class SongRestController {
     @Autowired
     private SongService songService;
 
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+
     @RequestMapping(path = "singer/create", method = RequestMethod.POST, consumes = {"multipart/form-data"})
     public ResponseEntity createUser(@ModelAttribute SongRequest songRequest, HttpServletRequest request){
-        return new ResponseEntity(songService.saveOrUpdate(songRequest), HttpStatus.CREATED);
+
+        String token = jwtAuthenticationFilter.getJwtFromRequest(request);
+
+        return new ResponseEntity(songService.saveOrUpdate(songRequest, token), HttpStatus.CREATED);
     }
 
 }
