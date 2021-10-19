@@ -25,10 +25,10 @@ public class UserRestController {
         return new ResponseEntity(userService.saveOrUpdate(user), HttpStatus.CREATED);
     }
 
-//    @PostMapping("/find-by-username")
-//    public ResponseEntity findByUserName(@RequestBody UserDataDto user){
-//        return new ResponseEntity(userService.findByUserName(user.getUserName()), HttpStatus.CREATED);
-//    }
+    @PostMapping("/admin/active-user")
+    public ResponseEntity activeUser(@RequestBody UserRequest user){
+        return new ResponseEntity(userService.activeUser(user.getUsername()), HttpStatus.CREATED);
+    }
 
     @PostMapping("/admin/get-list-user")
     public ResponseEntity findAllUser(@RequestBody UserRequest user) {
