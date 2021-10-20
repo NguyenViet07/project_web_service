@@ -6,6 +6,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class SongRequest {
-    private Song song;
+    private Long songId;
     private MultipartFile dataSongValue;
+    private String songName;
+    private String image;
+    private Long style;
+    private Long type;
+    private String description;
+    private String url;
+    private Long albumId;
+
+    private Integer page = 1;
+    private Integer size = 10;
 }

@@ -28,16 +28,16 @@ public class Song {
     @Column(name = "views")
     private Long views;
 
-    @Column(name = "style")
+    @Column(name = "style") //Phong cách âm nhạc: rock, pop ....
     private Long style;
 
-    @Column(name = "type")
+    @Column(name = "type") // Kiểu nhạc : nhạc us/uk, nhạc hàn, nhạc trung
     private Long type;
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "create", updatable = false)
+    @Column(name = "created", updatable = false)
     @CreationTimestamp
     private Date createDate;
 

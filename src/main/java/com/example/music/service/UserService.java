@@ -123,7 +123,18 @@ public class UserService implements UserDetailsService {
     }
 
     public ResponseResult findByUserName(String userName) {
-        return ResponseResult.success(userRepository.findByUsername(userName));
+
+        User user = userRepository.findByUsername(userName);
+        UserViewDto userViewDto = new UserViewDto();
+
+        userViewDto.setAddress(user.getAddress());
+        userViewDto.setCompany(user.getCompany());
+        userViewDto.setIdentityCard(user.getIdentityCard());
+        userViewDto.setUsername(user.getUsername());
+        userViewDto.setName(user.getName());
+        userViewDto.setIsSinger(user.getIsSinger());
+
+        return ResponseResult.success(userViewDto);
     }
 
     public ResponseResult getListUser(UserRequest user) {
