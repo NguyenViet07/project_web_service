@@ -2,8 +2,10 @@ package com.example.music.service;
 
 import com.example.music.config.JwtTokenProvider;
 import com.example.music.dto.request.SongRequest;
+import com.example.music.model.Like;
 import com.example.music.model.Song;
 import com.example.music.model.User;
+import com.example.music.repositories.LikeRepository;
 import com.example.music.repositories.SongRepository;
 import com.example.music.response.ResponseCode;
 import com.example.music.response.ResponseResult;
@@ -32,6 +34,9 @@ public class SongService {
 
     @Autowired
     private SongRepository songRepository;
+
+    @Autowired
+    private LikeRepository likeRepository;
 
     @Autowired
     private JwtTokenProvider tokenProvider;
@@ -92,7 +97,6 @@ public class SongService {
 
     public ResponseResult getListSongByUserId(SongRequest songRequest, String token) {
         try {
-
             // lấy thông tin user
             User user = tokenProvider.getUserIdFromJWT(token);
 
@@ -108,14 +112,27 @@ public class SongService {
         }
     }
 
-    public ResponseResult findBySongId(Long songId) {
+    public ResponseResult findBySongId(Long songId, String token) {
         try {
+
             Song song = songRepository.findAllBySongId(songId);
 
             SongRequest songRequest = new SongRequest();
             songRequest.setSongName(song.getSongName());
             songRequest.setDescription(song.getDescription());
             songRequest.setUrl(song.getLink());
+
+            songRequest.setLike(0);
+
+            if (token != null) {
+                User user = tokenProvider.getUserIdFromJWT(token);
+                if (user != null) {
+                    Like like = likeRepository.findLikeById(user.getUserId(), songId);
+                    if (like != null) {
+                        songRequest.setLike(1);
+                    }
+                }
+            }
 
 //            String urlName = "classpath:"+ song.getLink();
 //            File data = ResourceUtils.getFile(urlName);

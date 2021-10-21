@@ -25,7 +25,7 @@ public class Playlist {
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "create", updatable = false)
+    @Column(name = "created", updatable = false)
     @CreationTimestamp
     private Date createDate;
 

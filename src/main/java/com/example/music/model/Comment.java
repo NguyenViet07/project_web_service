@@ -25,7 +25,7 @@ public class Comment {
     @Column(name = "song_id")
     private Long songId;
 
-    @Column(name = "create", updatable = false)
+    @Column(name = "created", updatable = false)
     @CreationTimestamp
     private Date createDate;
 

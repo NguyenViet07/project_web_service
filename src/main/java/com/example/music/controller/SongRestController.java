@@ -39,14 +39,15 @@ public class SongRestController {
     }
 
     @PostMapping("/singer/get-list")
-    public ResponseEntity getListSongByUserId(SongRequest songRequest, HttpServletRequest request){
+    public ResponseEntity getListSongByUserId(@RequestBody SongRequest songRequest, HttpServletRequest request){
         String token = jwtAuthenticationFilter.getJwtFromRequest(request);
         return new ResponseEntity(songService.getListSongByUserId(songRequest, token), HttpStatus.OK);
     }
 
     @PostMapping("/info")
-    public ResponseEntity findBySongId(@RequestBody SongRequest songRequest){
-        return new ResponseEntity(songService.findBySongId(songRequest.getSongId()), HttpStatus.OK);
+    public ResponseEntity findBySongId(@RequestBody SongRequest songRequest, HttpServletRequest request){
+        String token = jwtAuthenticationFilter.getJwtFromRequest(request);
+        return new ResponseEntity(songService.findBySongId(songRequest.getSongId(), token), HttpStatus.OK);
     }
 
     @GetMapping("/download")
@@ -56,7 +57,7 @@ public class SongRestController {
             try {
                 byte[] value = Files.readAllBytes(file.toPath());
                 HttpHeaders headers = new HttpHeaders();
-                headers.set("Content-Disposition", "attachment; filename=" + url.split("/")[url.split("/").length - 1]);
+//                headers.set("Content-Disposition", "attachment; filename=" + url.split("/")[url.split("/").length - 1]);
                 return ResponseEntity.status(HttpStatus.OK).headers(headers).body(value);
             } catch (IOException e) {
                 e.printStackTrace();

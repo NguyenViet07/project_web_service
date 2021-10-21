@@ -15,6 +15,7 @@ public class SongRequest {
     private String description;
     private String url;
     private Long albumId;
+    private Integer like;
 
     private Integer page = 1;
     private Integer size = 10;
