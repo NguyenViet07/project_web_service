@@ -16,14 +16,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.beans.Transient;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -145,6 +143,19 @@ public class SongService {
             responseCode.setMessage(ex.getMessage());
             return new ResponseResult(responseCode);
         }
+    }
+
+
+    public Song addSongAlbum(Long songId, Long alBumId) {
+
+        Song song = songRepository.findAllBySongId(songId);
+
+        song.setAlbumId(alBumId);
+
+        song = songRepository.save(song);
+
+        return song;
+
     }
 
 }
