@@ -6,4 +6,5 @@ import lombok.Data;
 public class UserInfo {
     private String userName;
     private String fullName;
+    private String avatar;
 }

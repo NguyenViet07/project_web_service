@@ -4,6 +4,7 @@ public interface IUserDTO {
     String getUsername();
     String getName();
     String getRoleName();
+    String getAvatar();
     String getAddress();
     String getCompany();
     String getIdentityCard();
