@@ -4,8 +4,10 @@ import com.example.music.config.JwtTokenProvider;
 import com.example.music.dto.request.SongRequest;
 import com.example.music.model.Like;
 import com.example.music.model.Song;
+import com.example.music.model.SongPlaylist;
 import com.example.music.model.User;
 import com.example.music.repositories.LikeRepository;
+import com.example.music.repositories.SongPlaylistRepository;
 import com.example.music.repositories.SongRepository;
 import com.example.music.response.ResponseCode;
 import com.example.music.response.ResponseResult;
@@ -38,6 +40,10 @@ public class SongService {
 
     @Autowired
     private JwtTokenProvider tokenProvider;
+
+
+    @Autowired
+    private SongPlaylistRepository songPlaylistRepository;
 
     @Value("${upload.dir}")
     private String uploadPath;
@@ -155,6 +161,22 @@ public class SongService {
         song = songRepository.save(song);
 
         return song;
+
+    }
+
+    public SongPlaylist addSongPlayList(Long songId, Long playListId) {
+
+        SongPlaylist.PlaylistSongId id = new SongPlaylist.PlaylistSongId();
+
+        id.setSongId(songId);
+        id.setPlaylistId(playListId);
+
+        SongPlaylist songPlaylist = new SongPlaylist();
+        songPlaylist.setPlaylistSongId(id);
+
+        songPlaylist = songPlaylistRepository.save(songPlaylist);
+
+        return songPlaylist;
 
     }
 
