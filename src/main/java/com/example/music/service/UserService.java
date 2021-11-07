@@ -129,7 +129,6 @@ public class UserService implements UserDetailsService {
         userViewDto.setUsername(user.getUsername());
         userViewDto.setName(user.getName());
         userViewDto.setIsSinger(user.getIsSinger());
-        userViewDto.setImage(user.getImage());
 
         return ResponseResult.success(userViewDto);
     }

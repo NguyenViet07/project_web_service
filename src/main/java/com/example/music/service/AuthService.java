@@ -90,7 +90,7 @@ public class AuthService {
         UserInfo userInfo = new UserInfo();
         userInfo.setUserName(iUserDTO.getUsername());
         userInfo.setFullName(iUserDTO.getName());
-
+        userInfo.setAvatar(iUserDTO.getAvatar());
         userDataDto.setUserInfo(userInfo);
         userDataDto.setRoleName(iUserDTO.getRoleName());
 

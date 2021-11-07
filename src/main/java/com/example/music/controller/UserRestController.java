@@ -21,8 +21,8 @@ public class UserRestController {
     private UserService userService;
 
     @PostMapping("/create")
-    public ResponseEntity createUser(@RequestBody User user){
-        return new ResponseEntity(userService.saveOrUpdate(user), HttpStatus.CREATED);
+    public ResponseEntity createUser(@RequestBody UserRequest userRequest){
+        return new ResponseEntity(userService.saveOrUpdate(userRequest), HttpStatus.CREATED);
     }
 
     @PostMapping("/all-user/info")

@@ -15,7 +15,7 @@ import java.util.Objects;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Query(value = " SELECT u.username, u.name, r.name as roleName " +
+    @Query(value = " SELECT u.username, u.name, u.image as avatar, r.name as roleName " +
             " FROM users u INNER JOIN role r ON u.id_role = r.id " +
             " WHERE username = :userName ", nativeQuery = true)
     IUserDTO findUserDTOByUserName(@Param("userName")String userName);

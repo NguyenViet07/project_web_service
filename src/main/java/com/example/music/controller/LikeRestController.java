@@ -27,13 +27,13 @@ public class LikeRestController {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    @PostMapping("/create-song")
+    @PostMapping("/all-user/create-song")
     public ResponseEntity createLike(@RequestBody SongRequest songRequest, HttpServletRequest request){
         String token = jwtAuthenticationFilter.getJwtFromRequest(request);
         return new ResponseEntity(likeService.save(songRequest.getSongId(), token), HttpStatus.CREATED);
     }
 
-    @PostMapping("/delete-list")
+    @PostMapping("/all-user/delete-list")
     public ResponseEntity deleteLike(@RequestBody SongRequest songRequest, HttpServletRequest request){
         String token = jwtAuthenticationFilter.getJwtFromRequest(request);
         return new ResponseEntity(likeService.deleteLike(songRequest.getSongId(), token), HttpStatus.OK);
