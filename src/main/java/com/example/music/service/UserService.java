@@ -66,28 +66,48 @@ public class UserService implements UserDetailsService {
     }
 
 //    @Transient
-    public ResponseResult saveOrUpdate(User user) {
+    public ResponseResult saveOrUpdate(UserRequest userRequest) {
         try {
-            if (user == null || user.getUsername() == null || user.getPassword() == null || user.getIsSinger() == null) {
+            if (userRequest == null || userRequest.getUsername() == null || userRequest.getPassword() == null || userRequest.getIsSinger() == null) {
                 return new ResponseResult(ResponseCode.ERR_INPUT);
             }
-            if (user.getUsername() != null) {
-                User userOld = userRepository.findByUsername(user.getUsername());
+            if (userRequest.getUsername() != null) {
+                User userOld = userRepository.findByUsername(userRequest.getUsername());
                 if (userOld != null) return new ResponseResult(ResponseCode.ERROR_USER_EXIST);
             }
-            if (user.getIsSinger() == 0) {
-                user.setRoleId(3l);
-            } else if (user.getIsSinger() == 1){
-                user.setRoleId(2l);
-                user.setIsActive(0);
-                if (user.getCompany() == null || user.getAddress() == null || user.getIdentityCard() == null) {
+
+            User user = new User();
+
+            if (userRequest.getIsSinger()) {
+                if (userRequest.getCompany() == null || userRequest.getAddress() == null || userRequest.getIdentityCard() == null) {
                     return new ResponseResult(ResponseCode.ERR_INPUT);
                 }
-            } else return new ResponseResult(ResponseCode.ERROR);
+                user.setIsSinger(1);
+                user.setIsActive(0);
+                Role role = roleRepository.findAllById(2l);
+                user.setRoles(role);
+            } else {
+                user.setIsSinger(0);
+                user.setIsActive(1);
+                Role role = roleRepository.findAllById(3l);
+                user.setRoles(role);
+            }
 
-            Role role = roleRepository.findAllById(user.getRoleId());
-            user.setRoles(role);
-            String passDecode = passwordEncoder.encode(user.getPassword());
+//            String fileUpload = userRequest.getImage();
+//
+//            if (fileUpload != null) {
+//                int i = fileUpload.indexOf(",");
+//                String base64 = fileUpload.substring(i + 1);
+//                user.setImage(base64);
+//            }
+
+            user.setImage(userRequest.getImage());
+            user.setName(userRequest.getName());
+            user.setUsername(userRequest.getUsername());
+            user.setCompany(userRequest.getCompany());
+            user.setAddress(user.getIdentityCard());
+            user.setIdentityCard(userRequest.getIdentityCard());
+            String passDecode = passwordEncoder.encode(userRequest.getPassword());
             user.setPassword(passDecode);
 
             userRepository.save(user);

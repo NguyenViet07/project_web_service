@@ -31,7 +31,7 @@ public class PlaylistService {
     @Autowired
     private JwtTokenProvider tokenProvider;
 
-    public ResponseResult save(Playlist playlist, String token) {
+    public ResponseResult saveOrUpdate(Playlist playlist, String token) {
         try {
             // lấy thông tin user
             User user = tokenProvider.getUserIdFromJWT(token);

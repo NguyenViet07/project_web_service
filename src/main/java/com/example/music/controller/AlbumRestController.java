@@ -50,11 +50,4 @@ public class AlbumRestController {
 //        return new ResponseEntity(albumService.deleteComment(commentRequest.getCommentId(), token), HttpStatus.OK);
 //    }
 
-
-    @PostMapping("/singer/create")
-    public ResponseEntity createAlbum(@RequestBody Album album, HttpServletRequest request){
-        String token = jwtAuthenticationFilter.getJwtFromRequest(request);
-        return new ResponseEntity(albumService.saveOrUpdate(album, token), HttpStatus.CREATED);
-    }
-
 }
