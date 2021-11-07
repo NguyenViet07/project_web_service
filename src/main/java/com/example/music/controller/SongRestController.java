@@ -50,6 +50,21 @@ public class SongRestController {
         return new ResponseEntity(songService.findBySongId(songRequest.getSongId(), token), HttpStatus.OK);
     }
 
+    @PostMapping("/up-view")
+    public ResponseEntity upView(@RequestBody SongRequest songRequest){
+        return new ResponseEntity(songService.upView(songRequest.getSongId()), HttpStatus.OK);
+    }
+
+    @GetMapping("/list-created")
+    public ResponseEntity getListSongCreated(){
+        return new ResponseEntity(songService.getListSongCreated(), HttpStatus.OK);
+    }
+
+    @GetMapping("/list-view")
+    public ResponseEntity getListSongView(){
+        return new ResponseEntity(songService.getListSongView(), HttpStatus.OK);
+    }
+
     @GetMapping("/download")
     public Object download(@RequestParam("url") String url) {
         File file = new File(url);
@@ -57,7 +72,7 @@ public class SongRestController {
             try {
                 byte[] value = Files.readAllBytes(file.toPath());
                 HttpHeaders headers = new HttpHeaders();
-//                headers.set("Content-Disposition", "attachment; filename=" + url.split("/")[url.split("/").length - 1]);
+                headers.set("Content-Disposition", "attachment; filename=" + url.split("/")[url.split("/").length - 1]);
                 return ResponseEntity.status(HttpStatus.OK).headers(headers).body(value);
             } catch (IOException e) {
                 e.printStackTrace();

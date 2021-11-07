@@ -65,28 +65,24 @@ public class UserService implements UserDetailsService {
         return new UserPrinciple(user.getUserId(), user.getUsername(), user.getPassword(), Arrays.asList(new SimpleGrantedAuthority(user.getRoles().getName())));
     }
 
-    @Transient
+//    @Transient
     public ResponseResult saveOrUpdate(User user) {
         try {
-            if (user == null || user.getUsername() == null || user.getPassword() == null || user.getRoleId() == null) {
+            if (user == null || user.getUsername() == null || user.getPassword() == null || user.getIsSinger() == null) {
                 return new ResponseResult(ResponseCode.ERR_INPUT);
             }
             if (user.getUsername() != null) {
                 User userOld = userRepository.findByUsername(user.getUsername());
                 if (userOld != null) return new ResponseResult(ResponseCode.ERROR_USER_EXIST);
             }
-            if (user.getRoleId() == 3) {
-                user.setIsSinger(0);
-                user.setIsSinger(1);
-            } else if (user.getRoleId() == 2){
-                user.setIsSinger(1);
+            if (user.getIsSinger() == 0) {
+                user.setRoleId(3l);
+            } else if (user.getIsSinger() == 1){
+                user.setRoleId(2l);
                 user.setIsActive(0);
                 if (user.getCompany() == null || user.getAddress() == null || user.getIdentityCard() == null) {
                     return new ResponseResult(ResponseCode.ERR_INPUT);
                 }
-            } else if (user.getRoleId() == 1) {
-                user.setIsSinger(1);
-                user.setIsActive(1);
             } else return new ResponseResult(ResponseCode.ERROR);
 
             Role role = roleRepository.findAllById(user.getRoleId());
@@ -133,6 +129,7 @@ public class UserService implements UserDetailsService {
         userViewDto.setUsername(user.getUsername());
         userViewDto.setName(user.getName());
         userViewDto.setIsSinger(user.getIsSinger());
+        userViewDto.setImage(user.getImage());
 
         return ResponseResult.success(userViewDto);
     }

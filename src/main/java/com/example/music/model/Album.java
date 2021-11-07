@@ -19,6 +19,9 @@ public class Album {
     @Column(name = "name_album")
     private String albumName;
 
+    @Column(name = "image")
+    private String image;
+
     @Column(name = "user_id")
     private Long userId;
 
