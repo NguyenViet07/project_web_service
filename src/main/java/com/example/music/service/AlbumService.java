@@ -2,9 +2,7 @@ package com.example.music.service;
 
 import com.example.music.config.JwtTokenProvider;
 import com.example.music.dto.request.AlbumRequest;
-import com.example.music.dto.request.CommentRequest;
 import com.example.music.model.Album;
-import com.example.music.model.Comment;
 import com.example.music.model.User;
 import com.example.music.repositories.AlbumRepository;
 import com.example.music.repositories.SongRepository;
@@ -80,7 +78,6 @@ public class AlbumService {
             return new ResponseResult(responseCode);
         }
     }
-
 
 
 }

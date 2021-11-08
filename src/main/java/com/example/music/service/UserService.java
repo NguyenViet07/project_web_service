@@ -22,7 +22,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Base64Utils;
 
 import java.beans.Transient;
 import java.text.DateFormat;
@@ -66,7 +65,7 @@ public class UserService implements UserDetailsService {
         return new UserPrinciple(user.getUserId(), user.getUsername(), user.getPassword(), Arrays.asList(new SimpleGrantedAuthority(user.getRoles().getName())));
     }
 
-    @Transient
+//    @Transient
     public ResponseResult saveOrUpdate(UserRequest userRequest) {
         try {
             if (userRequest == null || userRequest.getUsername() == null || userRequest.getPassword() == null || userRequest.getIsSinger() == null) {

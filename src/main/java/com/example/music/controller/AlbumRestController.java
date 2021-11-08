@@ -50,5 +50,4 @@ public class AlbumRestController {
 //        return new ResponseEntity(albumService.deleteComment(commentRequest.getCommentId(), token), HttpStatus.OK);
 //    }
 
-
 }

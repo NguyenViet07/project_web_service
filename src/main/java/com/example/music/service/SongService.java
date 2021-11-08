@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -58,10 +59,31 @@ public class SongService {
             String path = uploadFile(songRequest.getDataSongValue(), user.getUsername(), songRequest.getSongName());
             // lưu thông tin bài hát
             Song song = new Song();
+            song.setImage(songRequest.getImage());
             song.setSongName(songRequest.getSongName());
             song.setDescription(songRequest.getDescription());
             song.setUserId(user.getUserId());
             song.setLink(path);
+            songRepository.save(song);
+            return ResponseResult.success(null);
+        } catch (Exception ex) {
+            ResponseCode responseCode = ResponseCode.ERROR;
+            responseCode.setMessage(ex.getMessage());
+            return new ResponseResult(responseCode);
+        }
+    }
+
+    public ResponseResult upView(Long songId) {
+        try {
+            // lưu thông tin bài hát
+            Song song = songRepository.findAllBySongId(songId);
+            Long view = song.getViews();
+            if (view == null) {
+                view = 1l;
+            } else {
+                view = ++view;
+            }
+            song.setViews(view);
             songRepository.save(song);
             return ResponseResult.success(null);
         } catch (Exception ex) {
@@ -116,6 +138,31 @@ public class SongService {
         }
     }
 
+
+    public ResponseResult getListSongCreated() {
+        try {
+            // lấy thông tin user
+            List<Song> list = songRepository.getListSongCreated();
+            return ResponseResult.success(list);
+        } catch (Exception ex) {
+            ResponseCode responseCode = ResponseCode.ERROR;
+            responseCode.setMessage(ex.getMessage());
+            return new ResponseResult(responseCode);
+        }
+    }
+
+    public ResponseResult getListSongView() {
+        try {
+            // lấy thông tin user
+            List<Song> list = songRepository.getListSongView();
+            return ResponseResult.success(list);
+        } catch (Exception ex) {
+            ResponseCode responseCode = ResponseCode.ERROR;
+            responseCode.setMessage(ex.getMessage());
+            return new ResponseResult(responseCode);
+        }
+    }
+
     public ResponseResult findBySongId(Long songId, String token) {
         try {
 
@@ -137,12 +184,6 @@ public class SongService {
                     }
                 }
             }
-
-//            String urlName = "classpath:"+ song.getLink();
-//            File data = ResourceUtils.getFile(urlName);
-//            Files.readAllBytes(data.toPath());
-
-//            songRequest.setDataSongValue(Files.readAllBytes(data.toPath()));
             return ResponseResult.success(songRequest);
         } catch (Exception ex) {
             ResponseCode responseCode = ResponseCode.ERROR;
