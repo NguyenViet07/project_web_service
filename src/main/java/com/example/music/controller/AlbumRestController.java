@@ -27,9 +27,9 @@ public class AlbumRestController {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-//    @PostMapping("/get-list-album")
-//    public ResponseEntity getListComment(@RequestBody CommentRequest commentRequest){
-//        return new ResponseEntity(commentService.getListCommentBySongId(commentRequest), HttpStatus.CREATED);
+//    @PostMapping("/get-list")
+//    public ResponseEntity getListAlbum(@RequestBody AlbumRequest albumRequest){
+//        return new ResponseEntity(albumService.getListAlbum(albumRequest), HttpStatus.CREATED);
 //    }
 
     @PostMapping("/all-user/create")
