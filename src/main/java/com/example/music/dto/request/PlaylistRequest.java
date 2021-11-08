@@ -11,7 +11,7 @@ public class PlaylistRequest {
 
     private List<Long> listSongId;
     private Long userId;
-    private String namePlayList;
+    private String namePlaylist;
 
     private Integer page = 1;
     private Integer size = 10;

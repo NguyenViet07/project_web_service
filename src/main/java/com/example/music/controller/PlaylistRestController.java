@@ -2,6 +2,8 @@ package com.example.music.controller;
 
 
 import com.example.music.config.JwtAuthenticationFilter;
+import com.example.music.dto.request.AlbumRequest;
+import com.example.music.dto.request.PlaylistRequest;
 import com.example.music.model.Album;
 import com.example.music.model.Playlist;
 import com.example.music.service.AlbumService;
@@ -30,6 +32,13 @@ public class PlaylistRestController {
     public ResponseEntity createPlaylist(@RequestBody Playlist playlist, HttpServletRequest request){
         String token = jwtAuthenticationFilter.getJwtFromRequest(request);
         return new ResponseEntity(playlistService.saveOrUpdate(playlist, token), HttpStatus.CREATED);
+    }
+
+
+    @PostMapping("/all-user/get-list")
+    public ResponseEntity getListMyPlaylist(@RequestBody PlaylistRequest playlistRequest, HttpServletRequest request) {
+        String token = jwtAuthenticationFilter.getJwtFromRequest(request);
+        return new ResponseEntity(playlistService.getListMyPlaylist(playlistRequest, token), HttpStatus.OK);
     }
 
 }

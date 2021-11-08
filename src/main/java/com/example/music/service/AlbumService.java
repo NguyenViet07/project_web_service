@@ -49,6 +49,28 @@ public class AlbumService {
         }
     }
 
+    public ResponseResult getListMyAlbum(AlbumRequest albumRequest, String token) {
+        try {
+            // lấy thông tin user
+            User user = tokenProvider.getUserIdFromJWT(token);
+
+            if (user == null) {
+                ResponseCode responseCode = ResponseCode.ERROR;
+                responseCode.setMessage("Bạn phải đăng nhập");
+                return new ResponseResult(responseCode);
+            }
+
+
+            List<Album> list = albumRepository.findAllByUserId(user.getUserId());
+
+            return ResponseResult.success(list);
+        } catch (Exception ex) {
+            ResponseCode responseCode = ResponseCode.ERROR;
+            responseCode.setMessage(ex.getMessage());
+            return new ResponseResult(responseCode);
+        }
+    }
+
     public ResponseResult addSongToAlbum(AlbumRequest albumRequest, String token) {
         try {
             // lấy thông tin user

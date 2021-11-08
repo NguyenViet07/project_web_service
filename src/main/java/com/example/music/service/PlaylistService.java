@@ -53,6 +53,28 @@ public class PlaylistService {
         }
     }
 
+
+    public ResponseResult getListMyPlaylist(PlaylistRequest playlistRequest, String token) {
+        try {
+            // lấy thông tin user
+            User user = tokenProvider.getUserIdFromJWT(token);
+
+            if (user == null) {
+                ResponseCode responseCode = ResponseCode.ERROR;
+                responseCode.setMessage("Bạn phải đăng nhập");
+                return new ResponseResult(responseCode);
+            }
+
+            List<Playlist> list = playlistRepository.findAllByUserId(user.getUserId());
+
+            return ResponseResult.success(list);
+        } catch (Exception ex) {
+            ResponseCode responseCode = ResponseCode.ERROR;
+            responseCode.setMessage(ex.getMessage());
+            return new ResponseResult(responseCode);
+        }
+    }
+
     public ResponseResult addSongToPlaylist(PlaylistRequest playlistRequest, String token) {
         try {
             // lấy thông tin user
@@ -67,7 +89,7 @@ public class PlaylistService {
             Playlist playlist = playlistRepository.findAllByPlaylistId(playlistRequest.getPlaylistId());
             if (user.getRoleId() != 1l && user.getUserId() != playlist.getUserId()) {
                 ResponseCode responseCode = ResponseCode.ERROR;
-                responseCode.setMessage("Bạn chỉ được thêm album của mình");
+                responseCode.setMessage("Bạn chỉ được thêm playlist của mình");
                 return new ResponseResult(responseCode);
             }
             if (listSongId.size() > 0) {

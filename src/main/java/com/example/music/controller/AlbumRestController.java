@@ -32,6 +32,12 @@ public class AlbumRestController {
 //        return new ResponseEntity(albumService.getListAlbum(albumRequest), HttpStatus.CREATED);
 //    }
 
+    @PostMapping("/all-user/get-list")
+    public ResponseEntity getListMyAlbum(@RequestBody AlbumRequest albumRequest, HttpServletRequest request) {
+        String token = jwtAuthenticationFilter.getJwtFromRequest(request);
+        return new ResponseEntity(albumService.getListMyAlbum(albumRequest, token), HttpStatus.OK);
+    }
+
     @PostMapping("/all-user/create")
     public ResponseEntity createAlbum(@RequestBody Album album, HttpServletRequest request){
         String token = jwtAuthenticationFilter.getJwtFromRequest(request);
