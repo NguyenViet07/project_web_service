@@ -3,6 +3,7 @@ package com.example.music.controller;
 
 
 import com.example.music.config.JwtAuthenticationFilter;
+import com.example.music.dto.request.DtoRequest;
 import com.example.music.dto.request.SongRequest;
 import com.example.music.dto.request.UserRequest;
 import com.example.music.model.Song;
@@ -49,6 +50,19 @@ public class SongRestController {
         String token = jwtAuthenticationFilter.getJwtFromRequest(request);
         return new ResponseEntity(songService.findBySongId(songRequest.getSongId(), token), HttpStatus.OK);
     }
+
+    @PostMapping("/singer/add-album")
+    public ResponseEntity addSongToAlbum(@RequestBody DtoRequest dtoRequest, HttpServletRequest request){
+        String token = jwtAuthenticationFilter.getJwtFromRequest(request);
+        return new ResponseEntity(songService.addSongToAlbum(dtoRequest, token), HttpStatus.OK);
+    }
+
+    @PostMapping("/singer/add-playlist")
+    public ResponseEntity addSongToPlayList(@RequestBody DtoRequest dtoRequest, HttpServletRequest request){
+        String token = jwtAuthenticationFilter.getJwtFromRequest(request);
+        return new ResponseEntity(songService.addSongToPlayList(dtoRequest, token), HttpStatus.OK);
+    }
+
 
     @PostMapping("/up-view")
     public ResponseEntity upView(@RequestBody SongRequest songRequest){

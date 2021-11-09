@@ -50,6 +50,12 @@ public class AlbumRestController {
         return new ResponseEntity(albumService.addSongToAlbum(albumRequest, token), HttpStatus.OK);
     }
 
+    @PostMapping("/all-user/get-info")
+    public ResponseEntity getInfoAlbum(@RequestBody AlbumRequest albumRequest, HttpServletRequest request){
+        String token = jwtAuthenticationFilter.getJwtFromRequest(request);
+        return new ResponseEntity(albumService.getInfoAlbum(albumRequest, token), HttpStatus.OK);
+    }
+
 //    @PostMapping("/all-user/delete")
 //    public ResponseEntity deleteComment(@RequestBody CommentRequest commentRequest, HttpServletRequest request){
 //        String token = jwtAuthenticationFilter.getJwtFromRequest(request);

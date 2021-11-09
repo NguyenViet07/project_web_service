@@ -1,14 +1,11 @@
 package com.example.music.service;
 
 import com.example.music.config.JwtTokenProvider;
+import com.example.music.dto.request.DtoRequest;
 import com.example.music.dto.request.SongRequest;
-import com.example.music.model.Like;
-import com.example.music.model.Song;
-import com.example.music.model.SongPlaylist;
-import com.example.music.model.User;
-import com.example.music.repositories.LikeRepository;
-import com.example.music.repositories.SongPlaylistRepository;
-import com.example.music.repositories.SongRepository;
+import com.example.music.dto.response.SongResponse;
+import com.example.music.model.*;
+import com.example.music.repositories.*;
 import com.example.music.response.ResponseCode;
 import com.example.music.response.ResponseResult;
 import com.example.music.untils.RepositoryUtil;
@@ -35,6 +32,12 @@ public class SongService {
 
     @Autowired
     private SongRepository songRepository;
+
+    @Autowired
+    private AlbumRepository albumRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private LikeRepository likeRepository;
@@ -168,23 +171,33 @@ public class SongService {
 
             Song song = songRepository.findAllBySongId(songId);
 
-            SongRequest songRequest = new SongRequest();
-            songRequest.setSongName(song.getSongName());
-            songRequest.setDescription(song.getDescription());
-            songRequest.setUrl(song.getLink());
+            SongResponse songResponse = new SongResponse();
+            songResponse.setSongName(song.getSongName());
+            songResponse.setDescription(song.getDescription());
+            songResponse.setUrl(song.getLink());
+            songResponse.setImage(song.getImage());
 
-            songRequest.setLike(0);
+            if (song.getAlbumId() != null) {
+                Album album = albumRepository.findAllByAlbumId(song.getAlbumId());
+                songResponse.setAlbumName(album.getAlbumName());
+            }
+
+            User singer = userRepository.findAllByUserId(song.getUserId());
+            songResponse.setSingerName(singer.getName());
+
+
+            songResponse.setLike(0);
 
             if (token != null) {
                 User user = tokenProvider.getUserIdFromJWT(token);
                 if (user != null) {
                     Like like = likeRepository.findLikeById(user.getUserId(), songId);
                     if (like != null) {
-                        songRequest.setLike(1);
+                        songResponse.setLike(1);
                     }
                 }
             }
-            return ResponseResult.success(songRequest);
+            return ResponseResult.success(songResponse);
         } catch (Exception ex) {
             ResponseCode responseCode = ResponseCode.ERROR;
             responseCode.setMessage(ex.getMessage());
@@ -205,6 +218,26 @@ public class SongService {
 
     }
 
+    public ResponseResult addSongToAlbum(DtoRequest dtoRequest, String token) {
+        try {
+            Song song = songRepository.findAllBySongId(dtoRequest.getSongId());
+            if (song.getAlbumId() != null) {
+                ResponseCode responseCode = ResponseCode.ERROR;
+                responseCode.setMessage("Bài hát đã nằm trong một album khác");
+                return new ResponseResult(responseCode);
+            }
+            song.setAlbumId(dtoRequest.getAlbumId());
+
+            song = songRepository.save(song);
+
+            return ResponseResult.success(song);
+        } catch (Exception ex) {
+            ResponseCode responseCode = ResponseCode.ERROR;
+            responseCode.setMessage(ex.getMessage());
+            return new ResponseResult(responseCode);
+        }
+    }
+
     public SongPlaylist addSongPlayList(Long songId, Long playListId) {
 
         SongPlaylist.PlaylistSongId id = new SongPlaylist.PlaylistSongId();
@@ -218,6 +251,36 @@ public class SongService {
         songPlaylist = songPlaylistRepository.save(songPlaylist);
 
         return songPlaylist;
+
+    }
+
+    public ResponseResult addSongToPlayList(DtoRequest dtoRequest, String token) {
+        try {
+
+            SongPlaylist songPlaylistCheck = songPlaylistRepository.findAllBySongIdAndPlId(dtoRequest.getSongId(), dtoRequest.getPlayListId());
+
+            if (songPlaylistCheck != null) {
+                ResponseCode responseCode = ResponseCode.ERROR;
+                responseCode.setMessage("Bài hát đã được thêm vào playlist này");
+                return new ResponseResult(responseCode);
+            }
+
+            SongPlaylist.PlaylistSongId id = new SongPlaylist.PlaylistSongId();
+
+            id.setSongId(dtoRequest.getSongId());
+            id.setPlaylistId(dtoRequest.getPlayListId());
+
+            SongPlaylist songPlaylist = new SongPlaylist();
+            songPlaylist.setPlaylistSongId(id);
+
+            songPlaylist = songPlaylistRepository.save(songPlaylist);
+
+            return ResponseResult.success(songPlaylist);
+        } catch (Exception ex) {
+            ResponseCode responseCode = ResponseCode.ERROR;
+            responseCode.setMessage(ex.getMessage());
+            return new ResponseResult(responseCode);
+        }
 
     }
 

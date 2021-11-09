@@ -24,4 +24,12 @@ public interface SongRepository extends JpaRepository<Song, Long> {
 
     @Query(value = "SELECT * FROM song s ORDER BY s.views DESC LIMIT 0, 6 ", nativeQuery = true)
     List<Song> getListSongView();
+
+    @Query(value = "SELECT * FROM song s WHERE album_id = :albumId ", nativeQuery = true)
+    List<Song> getListSongByAlbumId(Long albumId);
+
+    @Query(value = " SELECT s.song_id, s.song_name, s.link, s.image, s.views, s.description, s.created, u.username " +
+            " FROM (song s INNER JOIN users u ON s.user_id = u.user_id) INNER JOIN song_playlist sp ON s.song_id = sp.song_id " +
+            " WHERE sp.playlist_id = :playlistId ", nativeQuery = true)
+    List<Object[]> getListSongByPlaylistId(Long playlistId);
 }

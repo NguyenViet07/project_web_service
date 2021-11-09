@@ -34,11 +34,22 @@ public class PlaylistRestController {
         return new ResponseEntity(playlistService.saveOrUpdate(playlist, token), HttpStatus.CREATED);
     }
 
-
     @PostMapping("/all-user/get-list")
     public ResponseEntity getListMyPlaylist(@RequestBody PlaylistRequest playlistRequest, HttpServletRequest request) {
         String token = jwtAuthenticationFilter.getJwtFromRequest(request);
         return new ResponseEntity(playlistService.getListMyPlaylist(playlistRequest, token), HttpStatus.OK);
+    }
+
+    @PostMapping("/all-user/get-info")
+    public ResponseEntity getInfoPlaylist(@RequestBody PlaylistRequest playlistRequest, HttpServletRequest request){
+        String token = jwtAuthenticationFilter.getJwtFromRequest(request);
+        return new ResponseEntity(playlistService.getInfoPlaylist(playlistRequest, token), HttpStatus.OK);
+    }
+
+    @PostMapping("/all-user/add-song")
+    public ResponseEntity addSongToAlbum(@RequestBody PlaylistRequest playlistRequest, HttpServletRequest request){
+        String token = jwtAuthenticationFilter.getJwtFromRequest(request);
+        return new ResponseEntity(playlistService.addSongToPlaylist(playlistRequest, token), HttpStatus.OK);
     }
 
 }
