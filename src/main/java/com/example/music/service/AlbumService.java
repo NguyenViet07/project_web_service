@@ -93,6 +93,29 @@ public class AlbumService {
         }
     }
 
+    public ResponseResult getAlbum(AlbumRequest albumRequest) {
+        try {
+
+            Album album = albumRepository.findAllByAlbumId(albumRequest.getAlbumId());
+
+            List<Song> list = songRepository.getListSongByAlbumId(album.getAlbumId());
+
+            User userAlbum = userRepository.findAllByUserId(album.getUserId());
+
+            DtoResponse dtoResponse = new DtoResponse();
+
+            dtoResponse.setAlbum(album);
+            dtoResponse.setSongList(list);
+            dtoResponse.setUserName(userAlbum.getUsername());
+
+            return ResponseResult.success(dtoResponse);
+        } catch (Exception ex) {
+            ResponseCode responseCode = ResponseCode.ERROR;
+            responseCode.setMessage(ex.getMessage());
+            return new ResponseResult(responseCode);
+        }
+    }
+
     public ResponseResult getInfoAlbum(AlbumRequest albumRequest, String token) {
         try {
             // lấy thông tin user

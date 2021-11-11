@@ -53,6 +53,11 @@ public class AlbumRestController {
         return new ResponseEntity(albumService.getInfoAlbum(albumRequest, token), HttpStatus.OK);
     }
 
+    @PostMapping("/get-info")
+    public ResponseEntity getAlbum(@RequestBody AlbumRequest albumRequest){
+        return new ResponseEntity(albumService.getAlbum(albumRequest), HttpStatus.OK);
+    }
+
 //    @PostMapping("/all-user/delete")
 //    public ResponseEntity deleteComment(@RequestBody CommentRequest commentRequest, HttpServletRequest request){
 //        String token = jwtAuthenticationFilter.getJwtFromRequest(request);
