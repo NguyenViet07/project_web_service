@@ -154,6 +154,20 @@ public class SongService {
         }
     }
 
+    public ResponseResult getSongNewCreated() {
+        try {
+            // lấy thông tin user
+            List<Song> list = songRepository.getListSongCreated();
+            if (list.size() > 0) {
+                return ResponseResult.success(list.get(0));
+            } else return new ResponseResult(ResponseCode.ERROR);
+        } catch (Exception ex) {
+            ResponseCode responseCode = ResponseCode.ERROR;
+            responseCode.setMessage(ex.getMessage());
+            return new ResponseResult(responseCode);
+        }
+    }
+
     public ResponseResult getListSongView() {
         try {
             // lấy thông tin user

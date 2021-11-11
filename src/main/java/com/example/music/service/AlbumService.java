@@ -60,6 +60,17 @@ public class AlbumService {
         }
     }
 
+    public ResponseResult getListAlbum() {
+        try {
+            List<Album> list = albumRepository.getListAlbum();
+            return ResponseResult.success(list);
+        } catch (Exception ex) {
+            ResponseCode responseCode = ResponseCode.ERROR;
+            responseCode.setMessage(ex.getMessage());
+            return new ResponseResult(responseCode);
+        }
+    }
+
     public ResponseResult getListMyAlbum(AlbumRequest albumRequest, String token) {
         try {
             // lấy thông tin user

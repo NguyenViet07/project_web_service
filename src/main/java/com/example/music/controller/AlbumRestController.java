@@ -27,10 +27,10 @@ public class AlbumRestController {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-//    @PostMapping("/get-list")
-//    public ResponseEntity getListAlbum(@RequestBody AlbumRequest albumRequest){
-//        return new ResponseEntity(albumService.getListAlbum(albumRequest), HttpStatus.CREATED);
-//    }
+    @PostMapping("/get-list")
+    public ResponseEntity getListAlbum(){
+        return new ResponseEntity(albumService.getListAlbum(), HttpStatus.CREATED);
+    }
 
     @PostMapping("/all-user/get-list")
     public ResponseEntity getListMyAlbum(@RequestBody AlbumRequest albumRequest, HttpServletRequest request) {

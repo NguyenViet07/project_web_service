@@ -69,6 +69,11 @@ public class SongRestController {
         return new ResponseEntity(songService.upView(songRequest.getSongId()), HttpStatus.OK);
     }
 
+    @GetMapping("/new-created")
+    public ResponseEntity getSongNewCreated(){
+        return new ResponseEntity(songService.getSongNewCreated(), HttpStatus.OK);
+    }
+
     @GetMapping("/list-created")
     public ResponseEntity getListSongCreated(){
         return new ResponseEntity(songService.getListSongCreated(), HttpStatus.OK);

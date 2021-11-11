@@ -46,6 +46,18 @@ public class PlaylistService {
     @Autowired
     private JwtTokenProvider tokenProvider;
 
+
+    public ResponseResult getListPlaylist() {
+        try {
+            List<Playlist> list = playlistRepository.getListPlaylist();
+            return ResponseResult.success(list);
+        } catch (Exception ex) {
+            ResponseCode responseCode = ResponseCode.ERROR;
+            responseCode.setMessage(ex.getMessage());
+            return new ResponseResult(responseCode);
+        }
+    }
+
     public ResponseResult saveOrUpdate(Playlist playlist, String token) {
         try {
             // lấy thông tin user

@@ -28,6 +28,12 @@ public class PlaylistRestController {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    @PostMapping("/get-list")
+    public ResponseEntity getListPlaylist(){
+        return new ResponseEntity(playlistService.getListPlaylist(), HttpStatus.CREATED);
+    }
+
+
     @PostMapping("/singer/create")
     public ResponseEntity createPlaylist(@RequestBody Playlist playlist, HttpServletRequest request){
         String token = jwtAuthenticationFilter.getJwtFromRequest(request);
