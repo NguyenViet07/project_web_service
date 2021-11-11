@@ -11,10 +11,7 @@ import com.example.music.service.PlaylistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,11 +25,10 @@ public class PlaylistRestController {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    @PostMapping("/get-list")
+    @GetMapping("/get-list")
     public ResponseEntity getListPlaylist(){
         return new ResponseEntity(playlistService.getListPlaylist(), HttpStatus.CREATED);
     }
-
 
     @PostMapping("/singer/create")
     public ResponseEntity createPlaylist(@RequestBody Playlist playlist, HttpServletRequest request){
