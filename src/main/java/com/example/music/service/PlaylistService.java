@@ -122,7 +122,7 @@ public class PlaylistService {
             DtoResponse dtoResponse = new DtoResponse();
 
             dtoResponse.setPlaylist(album);
-            dtoResponse.setSongResponseList(getListSongPlaylist(list));
+            dtoResponse.setSongResponseList(getListSongDto(list));
             dtoResponse.setUserName(userPlaylist.getUsername());
 
             return ResponseResult.success(dtoResponse);
@@ -133,7 +133,7 @@ public class PlaylistService {
         }
     }
 
-    public List<SongResponse> getListSongPlaylist(List<Object[]> list) {
+    public List<SongResponse> getListSongDto(List<Object[]> list) {
         if (list != null) {
             List<SongResponse> rs = new ArrayList<>();
             DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");

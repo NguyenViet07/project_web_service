@@ -45,6 +45,9 @@ public class SongService {
     @Autowired
     private JwtTokenProvider tokenProvider;
 
+    @Autowired
+    private PlaylistService playlistService;
+
 
     @Autowired
     private SongPlaylistRepository songPlaylistRepository;
@@ -173,6 +176,30 @@ public class SongService {
             // lấy thông tin user
             List<Song> list = songRepository.getListSongView();
             return ResponseResult.success(list);
+        } catch (Exception ex) {
+            ResponseCode responseCode = ResponseCode.ERROR;
+            responseCode.setMessage(ex.getMessage());
+            return new ResponseResult(responseCode);
+        }
+    }
+
+    public ResponseResult getListSongByLike() {
+        try {
+            // lấy thông tin user
+            List<Object[]> list = songRepository.getListSongByLike();
+            return ResponseResult.success(playlistService.getListSongDto(list));
+        } catch (Exception ex) {
+            ResponseCode responseCode = ResponseCode.ERROR;
+            responseCode.setMessage(ex.getMessage());
+            return new ResponseResult(responseCode);
+        }
+    }
+
+    public ResponseResult getListSongByComment() {
+        try {
+            // lấy thông tin user
+            List<Object[]> list = songRepository.getListSongByComment();
+            return ResponseResult.success(playlistService.getListSongDto(list));
         } catch (Exception ex) {
             ResponseCode responseCode = ResponseCode.ERROR;
             responseCode.setMessage(ex.getMessage());

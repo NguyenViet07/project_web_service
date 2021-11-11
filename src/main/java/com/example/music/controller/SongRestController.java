@@ -84,6 +84,16 @@ public class SongRestController {
         return new ResponseEntity(songService.getListSongView(), HttpStatus.OK);
     }
 
+    @GetMapping("/list-like")
+    public ResponseEntity getListSongByLike(){
+        return new ResponseEntity(songService.getListSongByLike(), HttpStatus.OK);
+    }
+
+    @GetMapping("/list-comment")
+    public ResponseEntity getListSongByComment(){
+        return new ResponseEntity(songService.getListSongByComment(), HttpStatus.OK);
+    }
+
     @GetMapping("/download")
     public Object download(@RequestParam("url") String url) {
         File file = new File(url);
