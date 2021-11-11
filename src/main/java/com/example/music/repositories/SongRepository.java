@@ -35,14 +35,14 @@ public interface SongRepository extends JpaRepository<Song, Long> {
 
     @Query(value = " SELECT s.song_id, s.song_name, s.link, s.image, s.views , s.description, s.created, u.username " +
             " FROM (song s INNER JOIN users u ON s.user_id = u.user_id) " +
-            " INNER JOIN (SELECT COUNT(*) cc, song_id FROM like_song GROUP BY song_id ORDER BY cc DESC LIMIT 0, 20 ) " +
+            " INNER JOIN (SELECT COUNT(*) cc, song_id FROM like_song GROUP BY song_id ORDER BY cc DESC LIMIT 0, 10 ) " +
             " ls ON s.song_id = ls.song_id ", nativeQuery = true)
     List<Object[]> getListSongByLike();
 
 
     @Query(value = " SELECT s.song_id, s.song_name, s.link, s.image, s.views , s.description, s.created, u.username " +
             "FROM (song s INNER JOIN users u ON s.user_id = u.user_id) INNER JOIN (SELECT COUNT(*) cc, song_id " +
-            " FROM comment GROUP BY song_id ORDER BY cc DESC LIMIT 0, 6 ) ls ON s.song_id = ls.song_id ", nativeQuery = true)
+            " FROM comment GROUP BY song_id ORDER BY cc DESC LIMIT 0, 10 ) ls ON s.song_id = ls.song_id ", nativeQuery = true)
     List<Object[]> getListSongByComment();
 
 }
