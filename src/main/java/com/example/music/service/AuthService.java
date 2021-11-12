@@ -57,6 +57,10 @@ public class AuthService {
 
             User user = userRepository.findByUsername(input.getUsername());
 
+            if (user.getIsActive() == 0 ) {
+                return new ResponseResult(ResponseCode.ERROR_ACTIVE);
+            }
+
             // logout tất cả các nơi đang dùng
             List<Token> listOldToken = tokenService.findAllByUsername(user.getUsername());
             for (Token token: listOldToken) {

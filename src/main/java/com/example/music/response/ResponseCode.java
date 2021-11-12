@@ -12,7 +12,8 @@ public enum  ResponseCode {
   ERROR_USER_EXIST("ERROR_USER_EXIST", "Tài khoản đã tồn tại"),
   ACCESS_DENIED("ACCESS_DENIED", "Truy cập bị từ chối"),
   SUCCESS("200", "Thành công"),
-  ERROR_AUTH("ERROR_AUTH", "Tên tài khoản hoặc mật khẩu không chính xác");
+  ERROR_AUTH("ERROR_AUTH", "Tên tài khoản hoặc mật khẩu không chính xác"),
+  ERROR_ACTIVE("ERROR_ACTIVE", "Tài khoản chưa được xác thực");
 
   String errorCode;
   String message;
