@@ -33,6 +33,12 @@ public interface SongRepository extends JpaRepository<Song, Long> {
             " WHERE sp.playlist_id = :playlistId ", nativeQuery = true)
     List<Object[]> getListSongByPlaylistId(Long playlistId);
 
+    @Query(value = " SELECT s.song_id, s.song_name, s.link, s.image, s.views, s.description, s.created, u.username FROM song s INNER JOIN users u ON s.user_id = u.user_id WHERE s.style = :style ", nativeQuery = true)
+    List<Object[]> getListSongByStyle(Long style);
+
+    @Query(value = " SELECT s.song_id, s.song_name, s.link, s.image, s.views, s.description, s.created, u.username FROM song s INNER JOIN users u ON s.user_id = u.user_id WHERE s.style is null or s.style = 7 ", nativeQuery = true)
+    List<Object[]> getListSongByStyleIsNull();
+
     @Query(value = " SELECT s.song_id, s.song_name, s.link, s.image, s.views , s.description, s.created, u.username " +
             " FROM (song s INNER JOIN users u ON s.user_id = u.user_id) " +
             " INNER JOIN (SELECT COUNT(*) cc, song_id FROM like_song GROUP BY song_id ORDER BY cc DESC LIMIT 0, 10 ) " +

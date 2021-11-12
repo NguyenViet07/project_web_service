@@ -89,6 +89,11 @@ public class SongRestController {
         return new ResponseEntity(songService.getListSongByLike(), HttpStatus.OK);
     }
 
+    @PostMapping("/list-style")
+    public ResponseEntity getListSongByStyle(@RequestBody SongRequest songRequest){
+        return new ResponseEntity(songService.getListSongByStyle(songRequest), HttpStatus.OK);
+    }
+
     @GetMapping("/list-comment")
     public ResponseEntity getListSongByComment(){
         return new ResponseEntity(songService.getListSongByComment(), HttpStatus.OK);

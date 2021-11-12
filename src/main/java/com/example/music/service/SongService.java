@@ -195,6 +195,24 @@ public class SongService {
         }
     }
 
+    public ResponseResult getListSongByStyle(SongRequest songRequest) {
+        try {
+
+            List<Object[]> list = null;
+            if (songRequest.getStyle() == 7) {
+                list = songRepository.getListSongByStyleIsNull();
+            } else {
+                list = songRepository.getListSongByStyle(songRequest.getStyle());
+            }
+
+            return ResponseResult.success(playlistService.getListSongDto(list));
+        } catch (Exception ex) {
+            ResponseCode responseCode = ResponseCode.ERROR;
+            responseCode.setMessage(ex.getMessage());
+            return new ResponseResult(responseCode);
+        }
+    }
+
     public ResponseResult getListSongByComment() {
         try {
             // lấy thông tin user
