@@ -5,6 +5,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
@@ -32,4 +34,12 @@ public class Album {
     @Column(name = "updated")
     @UpdateTimestamp
     private Date updateDate;
+
+    public String getCreatedTime() {
+        if (this.createDate != null) {
+            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+            return dateFormat.format(this.createDate);
+        }
+        return null;
+    }
 }

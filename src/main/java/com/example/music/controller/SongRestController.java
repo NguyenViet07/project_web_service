@@ -45,6 +45,13 @@ public class SongRestController {
         return new ResponseEntity(songService.getListSongByUserId(songRequest, token), HttpStatus.OK);
     }
 
+    @PostMapping("/singer/delete")
+    public ResponseEntity deleteSong(@RequestBody SongRequest songRequest, HttpServletRequest request){
+        String token = jwtAuthenticationFilter.getJwtFromRequest(request);
+        return new ResponseEntity(songService.deleteSong(songRequest.getSongId(), token), HttpStatus.OK);
+    }
+
+
     @PostMapping("/info")
     public ResponseEntity findBySongId(@RequestBody SongRequest songRequest, HttpServletRequest request){
         String token = jwtAuthenticationFilter.getJwtFromRequest(request);

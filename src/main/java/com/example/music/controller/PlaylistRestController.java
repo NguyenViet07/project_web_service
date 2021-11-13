@@ -36,6 +36,12 @@ public class PlaylistRestController {
         return new ResponseEntity(playlistService.saveOrUpdate(playlist, token), HttpStatus.CREATED);
     }
 
+    @PostMapping("/singer/delete")
+    public ResponseEntity deletePlaylist(@RequestBody PlaylistRequest playlistRequest, HttpServletRequest request){
+        String token = jwtAuthenticationFilter.getJwtFromRequest(request);
+        return new ResponseEntity(playlistService.deletePlaylist(playlistRequest, token), HttpStatus.CREATED);
+    }
+
     @PostMapping("/all-user/get-list")
     public ResponseEntity getListMyPlaylist(@RequestBody PlaylistRequest playlistRequest, HttpServletRequest request) {
         String token = jwtAuthenticationFilter.getJwtFromRequest(request);

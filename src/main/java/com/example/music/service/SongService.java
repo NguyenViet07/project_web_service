@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.beans.Transient;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -70,6 +71,8 @@ public class SongService {
             song.setDescription(songRequest.getDescription());
             song.setUserId(user.getUserId());
             song.setLink(path);
+            song.setStyle(song.getStyle());
+            song.setType(song.getType());
             songRepository.save(song);
             return ResponseResult.success(null);
         } catch (Exception ex) {
@@ -79,10 +82,15 @@ public class SongService {
         }
     }
 
-    @Transient
+    @Transactional
     public ResponseResult deleteSong(Long songId, String token) {
         try {
             User user = tokenProvider.getUserIdFromJWT(token);
+            if (user == null) {
+                ResponseCode responseCode = ResponseCode.ERROR;
+                responseCode.setMessage("Bạn phải đăng nhập");
+                return new ResponseResult(responseCode);
+            }
             Song song = songRepository.findAllBySongId(songId);
             if (song == null) {
                 return new ResponseResult(ResponseCode.ERROR);

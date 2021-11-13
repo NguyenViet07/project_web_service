@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.beans.Transient;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -106,40 +107,36 @@ public class PlaylistService {
         }
     }
 
-//    @Transient
-//    public ResponseResult deletePlaylist(PlaylistRequest playlistRequest, String token) {
-//        try {
-//
-//            // lấy thông tin user
-//            User user = tokenProvider.getUserIdFromJWT(token);
-//
-//            if (user == null) {
-//                ResponseCode responseCode = ResponseCode.ERROR;
-//                responseCode.setMessage("Bạn phải đăng nhập");
-//                return new ResponseResult(responseCode);
-//            }
-//
-//
-//            Playlist playlist = playlistRepository.findAllByPlaylistId(playlistRequest.getPlaylistId());
-//
-////            void songPlaylistRepository.deleteAllByPlaylistId(playlist.getPlaylistId());
-//
-////            if (list.size() > 0) {
-////                songRepository.deleteAlbum(list);
-////            }
-////
-////            if (album == null) {
-////                return new ResponseResult(ResponseCode.ERROR);
-////            } else {
-////                albumRepository.delete(album);
-////                return ResponseResult.success(null);
-////            }
-//        } catch (Exception ex) {
-//            ResponseCode responseCode = ResponseCode.ERROR;
-//            responseCode.setMessage(ex.getMessage());
-//            return new ResponseResult(responseCode);
-//        }
-//    }
+    @Transactional
+    public ResponseResult deletePlaylist(PlaylistRequest playlistRequest, String token) {
+        try {
+
+            // lấy thông tin user
+            User user = tokenProvider.getUserIdFromJWT(token);
+
+            if (user == null) {
+                ResponseCode responseCode = ResponseCode.ERROR;
+                responseCode.setMessage("Bạn phải đăng nhập");
+                return new ResponseResult(responseCode);
+            }
+
+
+            Playlist playlist = playlistRepository.findAllByPlaylistId(playlistRequest.getPlaylistId());
+
+            songPlaylistRepository.deleteAllByPlaylistId(playlist.getPlaylistId());
+
+            if (playlist == null) {
+                return new ResponseResult(ResponseCode.ERROR);
+            } else {
+                playlistRepository.delete(playlist);
+                return ResponseResult.success(null);
+            }
+        } catch (Exception ex) {
+            ResponseCode responseCode = ResponseCode.ERROR;
+            responseCode.setMessage(ex.getMessage());
+            return new ResponseResult(responseCode);
+        }
+    }
 
     public ResponseResult getInfoPlaylist(PlaylistRequest playlistRequest, String token) {
         try {

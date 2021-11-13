@@ -6,6 +6,7 @@ import com.example.music.model.Song;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -28,7 +29,8 @@ public interface SongRepository extends JpaRepository<Song, Long> {
     @Query(value = "SELECT * FROM song s WHERE album_id = :albumId ", nativeQuery = true)
     List<Song> getListSongByAlbumId(Long albumId);
 
-    @Query(value = "UPDATE song s set s.album_id is null WHERE song_id in :list ", nativeQuery = true)
+    @Modifying
+    @Query(value = "UPDATE song s set s.album_id = null WHERE song_id in :list ", nativeQuery = true)
     void deleteAlbum(List<Long> list);
 
     @Query(value = "SELECT s.song_id FROM song s WHERE album_id = :albumId ", nativeQuery = true)

@@ -78,7 +78,7 @@ public class UserService implements UserDetailsService {
 
             User user = new User();
 
-            if (userRequest.getIsSinger()) {
+            if (userRequest.getIsSinger() == 1l) {
                 if (userRequest.getCompany() == null || userRequest.getAddress() == null || userRequest.getIdentityCard() == null) {
                     return new ResponseResult(ResponseCode.ERR_INPUT);
                 }
@@ -156,7 +156,7 @@ public class UserService implements UserDetailsService {
     public ResponseResult getListUser(UserRequest user) {
         PageRequest page = PageRequest.of(user.getPage() - 1, user.getSize());
 
-        Page<Object[]> pageCustomer = userRepository.getListUser(user.getUsername(), 1l, page);
+        Page<Object[]> pageCustomer = userRepository.getListUser(user.getUsername(), 2l, page);
 
         return getListFileSign(pageCustomer);
     }

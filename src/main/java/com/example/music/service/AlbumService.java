@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.beans.Transient;
 import java.util.List;
 
@@ -94,7 +95,7 @@ public class AlbumService {
         }
     }
 
-    @Transient
+    @Transactional
     public ResponseResult deleteAlbum(AlbumRequest albumRequest, String token) {
         try {
 
@@ -106,7 +107,6 @@ public class AlbumService {
                 responseCode.setMessage("Bạn phải đăng nhập");
                 return new ResponseResult(responseCode);
             }
-
 
             Album album = albumRepository.findAllByAlbumId(albumRequest.getAlbumId());
 

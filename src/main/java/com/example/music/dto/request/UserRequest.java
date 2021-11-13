@@ -29,7 +29,7 @@ public class UserRequest {
 
     private Long roleId;
 
-    private Boolean isSinger;
+    private Long isSinger;
 
     private Integer isActive;
 
