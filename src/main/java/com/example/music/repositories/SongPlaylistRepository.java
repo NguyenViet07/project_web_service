@@ -16,4 +16,7 @@ public interface SongPlaylistRepository extends JpaRepository<SongPlaylist, Song
 
     @Query(value = "SELECT * FROM song_playlist WHERE song_id = :songId and playlist_id = :playlistId  ", nativeQuery = true)
     SongPlaylist findAllBySongIdAndPlId(Long songId, Long playlistId);
+
+    @Query(value = "DELETE  FROM song_playlist WHERE playlist_id = :playlistId  ", nativeQuery = true)
+    void deleteAllByPlaylistId(Long playlistId);
 }

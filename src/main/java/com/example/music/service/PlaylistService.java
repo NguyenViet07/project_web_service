@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.beans.Transient;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,6 +46,9 @@ public class PlaylistService {
 
     @Autowired
     private JwtTokenProvider tokenProvider;
+
+    @Autowired
+    private SongPlaylistRepository songPlaylistRepository;
 
 
     public ResponseResult getListPlaylist() {
@@ -102,6 +106,41 @@ public class PlaylistService {
         }
     }
 
+//    @Transient
+//    public ResponseResult deletePlaylist(PlaylistRequest playlistRequest, String token) {
+//        try {
+//
+//            // lấy thông tin user
+//            User user = tokenProvider.getUserIdFromJWT(token);
+//
+//            if (user == null) {
+//                ResponseCode responseCode = ResponseCode.ERROR;
+//                responseCode.setMessage("Bạn phải đăng nhập");
+//                return new ResponseResult(responseCode);
+//            }
+//
+//
+//            Playlist playlist = playlistRepository.findAllByPlaylistId(playlistRequest.getPlaylistId());
+//
+////            void songPlaylistRepository.deleteAllByPlaylistId(playlist.getPlaylistId());
+//
+////            if (list.size() > 0) {
+////                songRepository.deleteAlbum(list);
+////            }
+////
+////            if (album == null) {
+////                return new ResponseResult(ResponseCode.ERROR);
+////            } else {
+////                albumRepository.delete(album);
+////                return ResponseResult.success(null);
+////            }
+//        } catch (Exception ex) {
+//            ResponseCode responseCode = ResponseCode.ERROR;
+//            responseCode.setMessage(ex.getMessage());
+//            return new ResponseResult(responseCode);
+//        }
+//    }
+
     public ResponseResult getInfoPlaylist(PlaylistRequest playlistRequest, String token) {
         try {
             // lấy thông tin user
@@ -113,15 +152,15 @@ public class PlaylistService {
                 return new ResponseResult(responseCode);
             }
 
-            Playlist album = playlistRepository.findAllByPlaylistId(playlistRequest.getPlaylistId());
+            Playlist playlist = playlistRepository.findAllByPlaylistId(playlistRequest.getPlaylistId());
 
-            List<Object[]> list = songRepository.getListSongByPlaylistId(album.getPlaylistId());
+            List<Object[]> list = songRepository.getListSongByPlaylistId(playlist.getPlaylistId());
 
-            User userPlaylist = userRepository.findAllByUserId(album.getUserId());
+            User userPlaylist = userRepository.findAllByUserId(playlist.getUserId());
 
             DtoResponse dtoResponse = new DtoResponse();
 
-            dtoResponse.setPlaylist(album);
+            dtoResponse.setPlaylist(playlist);
             dtoResponse.setSongResponseList(getListSongDto(list));
             dtoResponse.setUserName(userPlaylist.getUsername());
 

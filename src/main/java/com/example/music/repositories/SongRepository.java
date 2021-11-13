@@ -28,6 +28,12 @@ public interface SongRepository extends JpaRepository<Song, Long> {
     @Query(value = "SELECT * FROM song s WHERE album_id = :albumId ", nativeQuery = true)
     List<Song> getListSongByAlbumId(Long albumId);
 
+    @Query(value = "UPDATE song s set s.album_id is null WHERE song_id in :list ", nativeQuery = true)
+    void deleteAlbum(List<Long> list);
+
+    @Query(value = "SELECT s.song_id FROM song s WHERE album_id = :albumId ", nativeQuery = true)
+    List<Long> getListSongId(Long albumId);
+
     @Query(value = " SELECT s.song_id, s.song_name, s.link, s.image, s.views, s.description, s.created, u.username " +
             " FROM (song s INNER JOIN users u ON s.user_id = u.user_id) INNER JOIN song_playlist sp ON s.song_id = sp.song_id " +
             " WHERE sp.playlist_id = :playlistId ", nativeQuery = true)
@@ -50,5 +56,11 @@ public interface SongRepository extends JpaRepository<Song, Long> {
             "FROM (song s INNER JOIN users u ON s.user_id = u.user_id) INNER JOIN (SELECT COUNT(*) cc, song_id " +
             " FROM comment GROUP BY song_id ORDER BY cc DESC LIMIT 0, 10 ) ls ON s.song_id = ls.song_id ", nativeQuery = true)
     List<Object[]> getListSongByComment();
+
+    @Query(value = " SELECT s.song_id, s.song_name, s.link, s.image, s.views , s.description, s.created, u.username  " +
+            " FROM (song s INNER JOIN users u ON s.user_id = u.user_id)   " +
+            " INNER JOIN like_song ls ON s.song_id = ls.song_id " +
+            " WHERE ls.user_id = :userId ", nativeQuery = true)
+    List<Object[]> getListMySongByLike(Long userId);
 
 }

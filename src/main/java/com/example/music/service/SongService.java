@@ -79,6 +79,24 @@ public class SongService {
         }
     }
 
+    @Transient
+    public ResponseResult deleteSong(Long songId, String token) {
+        try {
+            User user = tokenProvider.getUserIdFromJWT(token);
+            Song song = songRepository.findAllBySongId(songId);
+            if (song == null) {
+                return new ResponseResult(ResponseCode.ERROR);
+            } else {
+                songRepository.delete(song);
+                return ResponseResult.success(null);
+            }
+        } catch (Exception ex) {
+            ResponseCode responseCode = ResponseCode.ERROR;
+            responseCode.setMessage(ex.getMessage());
+            return new ResponseResult(responseCode);
+        }
+    }
+
     public ResponseResult upView(Long songId) {
         try {
             // lưu thông tin bài hát
@@ -187,6 +205,19 @@ public class SongService {
         try {
             // lấy thông tin user
             List<Object[]> list = songRepository.getListSongByLike();
+            return ResponseResult.success(playlistService.getListSongDto(list));
+        } catch (Exception ex) {
+            ResponseCode responseCode = ResponseCode.ERROR;
+            responseCode.setMessage(ex.getMessage());
+            return new ResponseResult(responseCode);
+        }
+    }
+
+    public ResponseResult getListMySongByLike(String token) {
+        try {
+            User user = tokenProvider.getUserIdFromJWT(token);
+            // lấy thông tin user
+            List<Object[]> list = songRepository.getListMySongByLike(user.getUserId());
             return ResponseResult.success(playlistService.getListSongDto(list));
         } catch (Exception ex) {
             ResponseCode responseCode = ResponseCode.ERROR;

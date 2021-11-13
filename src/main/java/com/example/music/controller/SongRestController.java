@@ -63,6 +63,11 @@ public class SongRestController {
         return new ResponseEntity(songService.addSongToPlayList(dtoRequest, token), HttpStatus.OK);
     }
 
+    @GetMapping("/singer/list-my-like")
+    public ResponseEntity getListMySongByLike(HttpServletRequest request){
+        String token = jwtAuthenticationFilter.getJwtFromRequest(request);
+        return new ResponseEntity(songService.getListMySongByLike(token), HttpStatus.OK);
+    }
 
     @PostMapping("/up-view")
     public ResponseEntity upView(@RequestBody SongRequest songRequest){
